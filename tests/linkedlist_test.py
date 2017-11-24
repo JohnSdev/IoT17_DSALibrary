@@ -43,8 +43,13 @@ class Test_LinkedList_Insert(unittest.TestCase):
     def test_insert_end_nonempty_list( self ):
         ll = LinkedList()
         ll.add( 50 )
-        ll.insert( 100, ll.search(50) )
-        self.assertEqual( ll.size(), 2 )
+        ll.add( 40 )
+        ll.insert( 45, ll.search(40) )
+        #ll.insertAfterValue( 100, 50 )
+        self.assertEqual( ll.size(), 3 )
+        self.assertNotEqual( ll.search(40), None )
+        self.assertNotEqual( ll.search(40).getNext(), None )
+        self.assertEqual( ll.search(40).getNext().getData(), 45 )
 
 
 

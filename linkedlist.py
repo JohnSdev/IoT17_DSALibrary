@@ -24,12 +24,32 @@ class LinkedList:
     def isEmpty(self):
         return self.head == None
 
+    # OBS: add infogar i BÖRJAN av listan
     def add(self, data):
         newnode = Node(data)         # Steg 1
         newnode.setNext( self.head ) # Steg 2
         self.head = newnode          # Steg 3
 
     def insert(self, data, after_node):
+        assert( after_node != None )
+        newnode = Node(data)                    # Steg 1
+        newnode.setNext( after_node.getNext() ) # Steg 2
+        after_node.setNext( newnode )           # Steg 3
+
+    def appendAtEnd(self, data):
+        newnode = Node(data)
+        current = self.head
+        while current and not current.getNext():
+            current = current.getNext() # stega framåt
+        if current:
+            current.setNext( newnode )
+        else:
+            # head = None...
+            self.head = newnode
+
+
+    def insertAfterValue(self, data, after_value):
+        after_node = self.search( after_value )
         assert( after_node != None )
         newnode = Node(data)                    # Steg 1
         newnode.setNext( after_node.getNext() ) # Steg 2
@@ -56,14 +76,15 @@ class LinkedList:
         if self.head == node:
             self.head = node.getNext()
             del node
-            return
+            return True
         current = self.head
         while current != None:
             if current.getNext() == node:
                 current.setNext( current.getNext().getNext() )
                 del node
-                return
+                return True
             current = current.getNext()
+        return False  # eller raise
 
     def print(self):
         current = self.head

@@ -24,4 +24,6 @@ g.addEdge( "JONK",   "LINK",   100 )
 g.addEdge( "LINK",   "STHLM",  30 )
 
 print( g.findCheapestPath( "STHLM", "LUND" ) )
+# Should be:
+#  (['STHLM', 'LINK', 'JONK', 'HELBG', 'LUND'], 170)
 
