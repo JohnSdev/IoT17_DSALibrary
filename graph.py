@@ -65,23 +65,65 @@ class Graph:
                         return [v1] + p
         return None
 
+
     def findCheapestPath(self, v1, v2, visited=[] ):
-        if self.areNeighbours( v1, v2 ):
-            return ( [ v1, v2 ], self.cost( v1, v2 ) )
+        cheapest_cost = None
+        cheapest_path = None
+        cheapest_is_neighbour = False
+        if v2 not in visited and self.areNeighbours(v1, v2):
+            cheapest_cost = self.cost(v1, v2)
+            cheapest_path = [v1,v2]
+            cheapest_is_neighbour = True
+
         # else use BFS..
         if v1 in self._table.keys():
             neighbours = self._table[v1]
-            cheapest_cost=None
-            cheapest_path=None
             for (n,w) in neighbours:
                 if n not in visited:
                     ( p, cost ) = self.findCheapestPath( n, v2, visited+[v1] )
                     if not cheapest_cost and not cheapest_path:
                         cheapest_cost = cost
                         cheapest_path = p
+                    elif cost!= 0 and cost < cheapest_cost:
+                        cheapest_cost = cost
+                        cheapest_path = p
+                        cheapest_is_neighbour = False
+
             if cheapest_path != None:
-                return ( [v1] + cheapest_path, cheapest_cost + self.cost( v1, cheapest_path[0] ) )
+                if cheapest_is_neighbour:
+                    return ( cheapest_path, cheapest_cost )
+                else:
+                    return ( [v1] + cheapest_path, cheapest_cost + self.cost(v1, cheapest_path[0]) )
         return (None, 0)
+
+    def dijsktra(self, initial):
+        # Note - this is for later in the course!
+        visited = {initial: 0}
+        path = {}
+        nodes = set(self._table.keys())
+
+        while nodes:
+            min_node = None
+            for node in nodes:
+                if node in visited:
+                    if min_node is None:
+                        min_node = node
+                    elif visited[node] < visited[min_node]:
+                        min_node = node
+
+            if min_node is None:
+                break
+
+            nodes.remove(min_node)
+            current_weight = visited[min_node]
+
+            for (edge,distance) in self._table[min_node]:
+                weight = current_weight + distance
+                if edge not in visited or weight < visited[edge]:
+                    visited[edge] = weight
+                    path[edge] = min_node
+
+        return visited, path
 
 
 

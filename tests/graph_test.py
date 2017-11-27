@@ -94,6 +94,67 @@ class Test_Graph_FindDFSPath(unittest.TestCase):
         g.addEdge( "C", "B" )
         self.assertEqual( g.findDFSPath( "A", "E" ), None )
 
+    def test_cheapest_path(self):
+        g = Graph()
+
+        g.addEdge("STHLM", "OREBRO", 75)
+        g.addEdge("OREBRO", "LIDK", 25)
+        g.addEdge("LIDK", "GBG", 50)
+        g.addEdge("GBG", "HELBG", 5)
+        g.addEdge("HELBG", "LUND", 5)
+        g.addEdge("LUND", "KRIST", 20)
+        g.addEdge("KRIST", "JONK", 15)
+        g.addEdge("HELBG", "JONK", 35)
+        g.addEdge("JONK", "LINK", 100)
+        g.addEdge("LINK", "STHLM", 30)
+
+        (p,c) = g.findCheapestPath("STHLM", "LUND")
+        self.assertEqual( c, 160 )
+
+
+
+    def test_cheapest_path_when_start_stop_are_neighbours_and_cheapest(self):
+        g = Graph()
+
+        g.addEdge("STHLM", "OREBRO", 75)
+        g.addEdge("OREBRO", "LIDK", 25)
+        g.addEdge("LIDK", "GBG", 50)
+        g.addEdge("GBG", "HELBG", 5)
+        g.addEdge("HELBG", "LUND", 5)
+        g.addEdge("LUND", "KRIST", 20)
+        g.addEdge("KRIST", "JONK", 15)
+        g.addEdge("HELBG", "JONK", 35)
+        g.addEdge("JONK", "LINK", 100)
+        g.addEdge("LINK", "STHLM", 30)
+        g.addEdge("STHLM", "LUND", 10)
+
+
+        (p,c) = g.findCheapestPath("STHLM", "LUND")
+
+        self.assertEqual( c, 10 )
+        self.assertEqual( p, ['STHLM','LUND'] )
+
+
+    def test_cheapest_path_when_start_stop_are_neighbours_but_more_expensive(self):
+        g = Graph()
+
+        g.addEdge("STHLM", "OREBRO", 75)
+        g.addEdge("OREBRO", "LIDK", 25)
+        g.addEdge("LIDK", "GBG", 50)
+        g.addEdge("GBG", "HELBG", 5)
+        g.addEdge("HELBG", "LUND", 5)
+        g.addEdge("LUND", "KRIST", 20)
+        g.addEdge("KRIST", "JONK", 15)
+        g.addEdge("HELBG", "JONK", 35)
+        g.addEdge("JONK", "LINK", 100)
+        g.addEdge("LINK", "STHLM", 30)
+        g.addEdge("STHLM", "LUND", 400)
+
+
+        (p,c) = g.findCheapestPath("STHLM", "LUND")
+        self.assertEqual( c, 160 )
+
+
 
 class Test_Graph_Connected(unittest.TestCase):
     def test_create_simple_graph( self ):

@@ -52,7 +52,7 @@ class BinarySearchTree:
             return self
 
     def toList(self):
-        l = []
+        l=[]
         if self._left:
             l = l + self._left.toList()
         if self.getData():
