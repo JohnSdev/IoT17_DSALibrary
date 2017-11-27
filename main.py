@@ -1,5 +1,8 @@
 
 from graph import Graph
+from sort import *
+import random
+import time
 
 g = Graph()
 g.addVertex("STHLM")
@@ -23,5 +26,23 @@ g.addEdge( "HELBG",  "JONK",   35 )
 g.addEdge( "JONK",   "LINK",   100 )
 g.addEdge( "LINK",   "STHLM",  30 )
 
-print( g.findCheapestPath( "STHLM", "LUND" ) )
+#print( g.findCheapestPath( "STHLM", "LUND" ) )
 
+mylist = []
+list2 = []
+for x in range(0,100000):
+    mylist.append(random.randint(0,999))
+
+for x in range(0,200000):
+    list2.append(random.randint(0,999))
+
+
+time1=time.time()
+shellSort(mylist)
+time2=time.time()
+print("Shell enkel = {:.4f}".format(time2-time1))
+
+time1=time.time()
+shellSort(list2)
+time2=time.time()
+print("Shell dubbel= {:.4f}".format(time2-time1))
